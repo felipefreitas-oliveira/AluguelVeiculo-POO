@@ -10,8 +10,6 @@ public class Aluguel extends Contrato implements IAluguel {
 
         super(cliente, veiculo);
     }
-
-
     @Override
     public double calcularValorAluguel(int dias, int formaPagamento) {
         Scanner scanner = new Scanner(System.in);
