@@ -1,8 +1,10 @@
 package br.com.cajazeiras.reservaveiculos.Model;
 
+import br.com.cajazeiras.reservaveiculos.Interface.IClientes;
+
 import java.util.Scanner;
 
-public class Cliente extends Pessoa{
+public class Cliente extends Pessoa implements IClientes {
     public Cliente(){}
 
     public Cliente(int id, String nome, String telefone, Endereco endereco) {
@@ -10,7 +12,7 @@ public class Cliente extends Pessoa{
         super(id, nome, telefone, endereco);
     }
 
-    public static Cliente[] cadastrar(Cliente[] clientes, Cliente cliente){
+    public Cliente[] cadastrar(Cliente[] clientes, Cliente cliente){
         Cliente[] novoVetorClientes = new Cliente[clientes.length + 1];
 
         for (int i = 0; i < clientes.length; i++){
@@ -44,7 +46,7 @@ public class Cliente extends Pessoa{
         return clientes;
     }
 
-    public static void listarClientes(Cliente[] clientes){
+    public void listarClientes(Cliente[] clientes){
         if(clientes.length > 0){
             for (int i = 0; i < clientes.length; i++) {
                 Cliente cliente1 = clientes[i];
@@ -58,7 +60,7 @@ public class Cliente extends Pessoa{
         }
     }
 
-    public static void atualizarCadastro(Cliente[] clientes, Cliente cliente){
+    public void atualizarCadastro(Cliente[] clientes, Cliente cliente){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -97,6 +99,4 @@ public class Cliente extends Pessoa{
             }
         }
     }
-
-
 }

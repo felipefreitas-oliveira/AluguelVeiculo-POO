@@ -10,15 +10,14 @@ import java.util.Scanner;
 
 public class Loja{
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Veiculo[] veiculos = new Veiculo[0];
-        Cliente[] clientes = new Cliente[0];
-        Funcionario funcionario = new Funcionario("felipe", "123");
-        Carro carro = new Carro();
-        Cliente cliente = new Cliente();
-        Moto moto = new Moto();
-
         while (true){
+            Scanner scanner = new Scanner(System.in);
+            Veiculo[] veiculos = new Veiculo[0];
+            Cliente[] clientes = new Cliente[0];
+            Funcionario funcionario = new Funcionario("felipe", "123");
+            Carro carro = new Carro();
+            Cliente cliente = new Cliente();
+            Moto moto = new Moto();
 
             System.out.println("MENU");
 
@@ -53,15 +52,15 @@ public class Loja{
 
                         if (op == 1) {
 
-                            clientes = Cliente.cadastrar(clientes, cliente);
+                            clientes = cliente.cadastrar(clientes, cliente);
 
                         } else if (op == 2) {
 
-                            Cliente.atualizarCadastro(clientes, cliente);
+                            cliente.atualizarCadastro(clientes, cliente);
 
                         } else if (op == 3) {
 
-                            Cliente.listarClientes(clientes);
+                            cliente.listarClientes(clientes);
 
                         } else if (op == 4) {
 
@@ -136,54 +135,68 @@ public class Loja{
                              Veiculo.reserva(veiculos);
 
                         }else if(op == 6){
-                            Cliente.listarClientes(clientes);
 
-                            System.out.print("Qual id do cliente: ");
-                            int idCliente = scanner.nextInt();
+                            if (clientes.length > 0 && veiculos.length > 0){
+                                cliente.listarClientes(clientes);
 
-                            Cliente clienteAluga = null;
+                                Cliente clienteAluga = null;
+                                Veiculo veiculoAluga = null;
 
-
-                            for (int i = 0; i < clientes.length; i++) {
-                                if (idCliente == clientes[i].getId()) {
-                                    clienteAluga = clientes[i];
-                                    break;
-
-                                }else {
-                                    System.out.println("Cliente não encontrado");
-                                }
-                            }
-
-                            Veiculo.listarFrota(veiculos);
-
-                            System.out.print("Qual id do veiculo: ");
-                            int idVeiculo = scanner.nextInt();
-
-                            Veiculo veiculoAluga = null;
-
-                            for (int i = 0; i < veiculos.length; i++) {
                                 while (true){
-                                    if(idVeiculo == veiculos[i].getId()){
-                                        veiculoAluga = veiculos[i];
-                                        break;
+                                    System.out.print("Qual id do cliente: ");
+                                    int idCliente = scanner.nextInt();
 
-                                    }else {
-                                        System.out.println("Veiculo não encontrado.");
+                                    for (int i = 0; i < clientes.length; i++) {
+
+                                        if (idCliente == clientes[i].getId()) {
+                                            clienteAluga = clientes[i];
+                                            break;
+                                        }else if(i == clientes.length - 1) {
+                                            System.out.println("Cliente não encontrado");
+                                        }
+                                    }
+                                    if(clienteAluga != null){
+                                        break;
                                     }
                                 }
+
+                                Veiculo.listarFrota(veiculos);
+
+                                while (true){
+                                    System.out.print("Qual id do veiculo: ");
+                                    int idVeiculo = scanner.nextInt();
+
+
+
+                                    for (int i = 0; i < veiculos.length; i++) {
+                                        if(idVeiculo == veiculos[i].getId()){
+                                            veiculoAluga = veiculos[i];
+                                            break;
+
+                                        }else if(i == veiculos.length - 1){
+                                            System.out.println("Veiculo não encontrado.");
+                                        }
+                                    }
+                                    if(veiculoAluga != null){
+                                        break;
+                                    }
+                                }
+
+                                Aluguel aluguel = new Aluguel(clienteAluga, veiculoAluga);
+
+                                aluguel.realizaAluguel();
+
+                                System.out.println("Quantas diárias: ");
+                                int diaria = scanner.nextInt();
+
+                                System.out.println("Qual forma de pagamento: [1]PIX [2] CARTÃO [3]DINHEIRO");
+                                int formaPagamento = scanner.nextInt();
+
+                                System.out.printf("Valor a ser pago: R$ %.2f\n", aluguel.calcularValorAluguel(diaria, formaPagamento));
+
+                            }else{
+                                System.err.println("Opção Invalida.");
                             }
-
-                            Aluguel aluguel = new Aluguel(clienteAluga, veiculoAluga);
-
-                            aluguel.realizaAluguel();
-
-                            System.out.println("Quantas diárias: ");
-                            int diaria = scanner.nextInt();
-
-                            System.out.println("Qual forma de pagamento: [1]PIX [2] CARTÃO [3]DINHEIRO");
-                            int formaPagamento = scanner.nextInt();
-
-                            System.out.printf("Valor a ser pago: R$ %.2f", aluguel.calcularValorAluguel(diaria, formaPagamento));
 
                         }else {
                             break;
@@ -194,7 +207,7 @@ public class Loja{
             }else if(op == 0){
                 break;
             }else {
-                System.out.println("Opção Invalida.");
+                System.err.println("Opção Invalida.");
             }
         }
     }
